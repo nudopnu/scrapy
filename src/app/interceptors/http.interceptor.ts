@@ -27,7 +27,7 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
         console.log(body);
 
         // Assuming the auth token and user info are in the response body
-        if (body) {
+        if (body.access_token && body.username) {
           auth.setAccessToken(body.access_token);
           auth.setUserInfo(body.username); // Adjust according to your response structure
         }
