@@ -1,0 +1,6 @@
+<label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{label}}</label>
+<input [type]="type" [attr.class]="classList.input[state]" [placeholder]="placeHolder" required [(ngModel)]="value"
+    (blur)="onBlur()" (keydown.enter)="onEnterKey()" />
+@for (err of errors(); track $index) {
+<p class="mt-2 text-sm text-red-600 dark:text-red-500">{{err}}</p>
+}
