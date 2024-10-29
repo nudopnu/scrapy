@@ -14,13 +14,18 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
   const auth = inject(AuthService);
   const accessToken = auth.accessToken;
+  console.log(accessToken);
   if (accessToken) {
-    req.headers.set("Authorization", `Bearer ${accessToken}`);
+    req = req.clone({
+      headers: req.headers.set("Authorization", `Bearer ${accessToken}`),
+    });
   }
   return next(req).pipe(
     tap((event) => {
       if (event instanceof HttpResponse && event.body) {
         const body = event.body as LoginResponse;
+        console.log(body);
+
         // Assuming the auth token and user info are in the response body
         if (body) {
           auth.setAccessToken(body.access_token);
