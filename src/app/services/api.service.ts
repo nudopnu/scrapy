@@ -20,8 +20,4 @@ export class ApiService {
     return this.http.get(url);
   }
 
-  login(username: string, password: string) {
-    const url = `${this.BASE_URL}/login`;
-    return this.http.post<LoginResponse>(url, { username, password });
-  }
 }

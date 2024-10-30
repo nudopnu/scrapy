@@ -109,7 +109,6 @@ export class InputComponent implements ControlValueAccessor, Validator {
 
   validate(control: AbstractControl): ValidationErrors | null {
     setTimeout(() => {
-      console.log(control);
       if (control.errors && this.touched) {
         const errorMesages = Object
           .entries(control.errors)

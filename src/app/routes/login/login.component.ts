@@ -8,6 +8,7 @@ import {
 import { catchError, of } from "rxjs";
 import { InputComponent } from "../../components/input/input.component";
 import { ApiService } from "../../services/api.service";
+import { AuthService } from "../../services/auth.service";
 
 @Component({
   selector: "fs-login",
@@ -28,6 +29,7 @@ export class LoginComponent {
   });
   isSubmitting = false;
   apiService = inject(ApiService);
+  authService = inject(AuthService);
 
   serverError = "";
 
@@ -35,16 +37,17 @@ export class LoginComponent {
     console.log(this.form.value);
     const username = this.form.value.username;
     const password = this.form.value.password;
+    const remember = !!this.form.value.remember;
     if (this.form.errors || !username || !password) {
       return;
     }
-    this.submit(username, password);
+    this.submit(username, password, remember);
   }
 
-  private submit(username: string, password: string) {
+  private submit(username: string, password: string, remember: boolean) {
     this.isSubmitting = true;
     this.serverError = "";
-    this.apiService.login(username, password).pipe(
+    this.authService.login(username, password, remember).pipe(
       catchError((err) => {
         this.isSubmitting = false;
         if (err.message) {
@@ -56,5 +59,4 @@ export class LoginComponent {
       this.isSubmitting = false;
     });
   }
-  
 }
