@@ -15,6 +15,6 @@ export class AppComponent implements OnInit{
   title = 'flowbite-sample';
   
   ngOnInit(): void {
-    initFlowbite();
+    console.log(initFlowbite());
   }
 }

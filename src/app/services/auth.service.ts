@@ -19,6 +19,7 @@ export class AuthService {
     const url = `${this.BASE_URL}/login`;
     return this.http.post<LoginResponse>(url, { username, password }).pipe(
       tap((res) => {
+        this.setUserInfo(res.username);
         this.setAccessToken(res.access_token);
         this.setRefreshToken(res.refresh_token, remember);
       }),
@@ -30,6 +31,7 @@ export class AuthService {
     const headers = { "Authorization": `Bearer ${sessionToken}` };
     return this.http.post<RefreshResponse>(url, null, { headers }).pipe(
       tap((res) => {
+        this.setUserInfo(this.parseJWT(res.access_token).username);        
         this.setAccessToken(res.access_token);
       }),
     );
@@ -57,9 +59,23 @@ export class AuthService {
     this.currentUser = username;
   }
 
-  private logout() {
+  logout() {
     localStorage.removeItem(this.REFRESH_TOKEN_KEY);
     sessionStorage.removeItem(this.REFRESH_TOKEN_KEY);
     this.loggedIn.set(false);
+    // TODO: Revoke refresh token
+  }
+
+  private parseJWT(token: string) {
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split("")
+        .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+        .join(""),
+    );
+
+    return JSON.parse(jsonPayload);
   }
 }
