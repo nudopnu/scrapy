@@ -1,6 +1,5 @@
 import { JsonPipe } from "@angular/common";
 import { Component, inject, OnInit } from "@angular/core";
-import { toSignal } from "@angular/core/rxjs-interop";
 import { Router } from "@angular/router";
 import { ApiService } from "../../services/api.service";
 
@@ -13,14 +12,13 @@ import { ApiService } from "../../services/api.service";
 })
 export class HomeComponent implements OnInit {
   router = inject(Router);
-  agents: any;
+  agents = [];
 
-  constructor(private apiService: ApiService){
-    this.agents = toSignal(this.apiService.getAgents());
-  }
+  constructor(private apiService: ApiService) {}
 
   ngOnInit(): void {
-    
-    // console.log(this.router.navigate(["login"]));
+    this.apiService.getAgents().subscribe((res) => {
+      console.log(res);
+    });
   }
 }

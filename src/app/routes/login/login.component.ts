@@ -1,4 +1,4 @@
-import { Component, inject } from "@angular/core";
+import { Component, inject, Input } from "@angular/core";
 import {
   FormBuilder,
   FormControl,
@@ -9,6 +9,7 @@ import { catchError, of } from "rxjs";
 import { InputComponent } from "../../components/input/input.component";
 import { ApiService } from "../../services/api.service";
 import { AuthService } from "../../services/auth.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "fs-login",
@@ -18,6 +19,8 @@ import { AuthService } from "../../services/auth.service";
   styleUrl: "./login.component.css",
 })
 export class LoginComponent {
+  @Input()
+  redirectTo?: string;
   form = inject(FormBuilder).group({
     username: ["", [
       Validators.required,
@@ -30,15 +33,16 @@ export class LoginComponent {
   isSubmitting = false;
   apiService = inject(ApiService);
   authService = inject(AuthService);
+  router = inject(Router);
 
   serverError = "";
 
   onClickSubmit() {
-    console.log(this.form.value);
     const username = this.form.value.username;
     const password = this.form.value.password;
     const remember = !!this.form.value.remember;
     if (this.form.errors || !username || !password) {
+      this.form.markAllAsTouched() 
       return;
     }
     this.submit(username, password, remember);
@@ -57,6 +61,9 @@ export class LoginComponent {
       }),
     ).subscribe((res) => {
       this.isSubmitting = false;
+      if (this.redirectTo) {
+        this.router.navigate([this.redirectTo]);
+      }
     });
   }
 }

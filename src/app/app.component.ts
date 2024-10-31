@@ -20,13 +20,7 @@ export class AppComponent implements OnInit {
   router = inject(Router);
   auth = inject(AuthService);
 
-  constructor() {
-    if (!this.auth.isAlive()) {
-      this.auth.checkHealth().pipe(
-        retry({ delay: 1000, count: 3 }),
-      ).subscribe();
-    }
-  }
+  constructor() {}
 
   ngOnInit(): void {
     initFlowbite();

@@ -1,5 +1,5 @@
 import { JsonPipe } from "@angular/common";
-import { Component, effect, Input, input, OnInit, signal } from "@angular/core";
+import { Component, effect, Input, signal } from "@angular/core";
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -103,8 +103,8 @@ export class InputComponent implements ControlValueAccessor, Validator {
     if (this.touched) {
       return;
     }
-    this.onTouched();
     this.touched = true;
+    this.onTouched();
   }
 
   validate(control: AbstractControl): ValidationErrors | null {

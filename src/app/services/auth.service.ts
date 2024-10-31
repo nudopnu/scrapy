@@ -1,8 +1,6 @@
-import { HttpClient } from "@angular/common/http";
 import { inject, Injectable, signal } from "@angular/core";
 import { Router } from "@angular/router";
-import { catchError, of, tap, throwError } from "rxjs";
-import { LoginResponse, RefreshResponse } from "../models/responses";
+import { tap } from "rxjs";
 import { ApiService } from "./api.service";
 
 @Injectable({
@@ -13,30 +11,11 @@ export class AuthService {
   accessToken?: string;
   currentUser?: string;
   isLoggedIn = signal(false);
-  isAlive = signal(false);
-  http = inject(HttpClient);
   router = inject(Router);
-  BASE_URL = inject(ApiService).BASE_URL;
-
-  checkHealth() {
-    const url = `${this.BASE_URL}/healthz`;
-    return this.http.get(url)
-      .pipe(
-        catchError((err) => {
-          console.log(err);
-          this.router.navigate(["error"], { queryParams: { status: 500 } });
-          this.isAlive.set(false);
-          return throwError(() => err);
-        }),
-        tap(() => {
-          this.isAlive.set(true);
-        }),
-      );
-  }
+  apiService = inject(ApiService);
 
   login(username: string, password: string, remember: boolean) {
-    const url = `${this.BASE_URL}/login`;
-    return this.http.post<LoginResponse>(url, { username, password }).pipe(
+    return this.apiService.login(username, password).pipe(
       tap((res) => {
         this.setUserInfo(res.username);
         this.setAccessToken(res.access_token);
@@ -46,9 +25,7 @@ export class AuthService {
   }
 
   refreshToken(sessionToken: string) {
-    const url = `${this.BASE_URL}/refresh`;
-    const headers = { "Authorization": `Bearer ${sessionToken}` };
-    return this.http.post<RefreshResponse>(url, null, { headers }).pipe(
+    return this.apiService.refresh(sessionToken).pipe(
       tap((res) => {
         this.setUserInfo(this.parseJWT(res.access_token).username);
         this.setAccessToken(res.access_token);
@@ -81,11 +58,13 @@ export class AuthService {
   logout() {
     localStorage.removeItem(this.REFRESH_TOKEN_KEY);
     sessionStorage.removeItem(this.REFRESH_TOKEN_KEY);
+    this.accessToken = undefined;
     this.isLoggedIn.set(false);
+    this.router.navigate(["/"]);
     // TODO: Revoke refresh token
   }
 
-  private parseJWT(token: string) {
+  parseJWT(token: string) {
     const base64Url = token.split(".")[1];
     const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
     const jsonPayload = decodeURIComponent(
