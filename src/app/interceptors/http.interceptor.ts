@@ -5,7 +5,7 @@ import {
 } from "@angular/common/http";
 import { inject } from "@angular/core";
 import { Router } from "@angular/router";
-import { catchError, switchMap, throwError } from "rxjs";
+import { catchError, retry, switchMap, throwError } from "rxjs";
 import { AuthService } from "../services/auth.service";
 
 export const httpInterceptor: HttpInterceptorFn = (req, next) => {
@@ -25,7 +25,7 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
       if (error instanceof HttpErrorResponse) {
         if (error.status == HttpStatusCode.Unauthorized) {
           if (refreshToken) {
-            return auth.refresh(refreshToken).pipe(
+            return auth.refreshToken(refreshToken).pipe(
               switchMap((res) => {
                 req = req.clone({
                   setHeaders: { Authorization: `Bearer ${res.access_token}` },

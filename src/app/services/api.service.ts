@@ -15,9 +15,4 @@ export class ApiService {
     return this.http.get(url);
   }
 
-  isAlive() {
-    const url = `${this.BASE_URL}/healthz`;
-    return this.http.get(url);
-  }
-
 }

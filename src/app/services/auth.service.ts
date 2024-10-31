@@ -1,8 +1,9 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable, signal } from "@angular/core";
-import { ApiService } from "./api.service";
+import { Router } from "@angular/router";
+import { catchError, of, tap, throwError } from "rxjs";
 import { LoginResponse, RefreshResponse } from "../models/responses";
-import { tap } from "rxjs";
+import { ApiService } from "./api.service";
 
 @Injectable({
   providedIn: "root",
@@ -11,9 +12,27 @@ export class AuthService {
   private REFRESH_TOKEN_KEY = "refresh_token";
   accessToken?: string;
   currentUser?: string;
-  loggedIn = signal(false);
+  isLoggedIn = signal(false);
+  isAlive = signal(false);
   http = inject(HttpClient);
+  router = inject(Router);
   BASE_URL = inject(ApiService).BASE_URL;
+
+  checkHealth() {
+    const url = `${this.BASE_URL}/healthz`;
+    return this.http.get(url)
+      .pipe(
+        catchError((err) => {
+          console.log(err);
+          this.router.navigate(["error"], { queryParams: { status: 500 } });
+          this.isAlive.set(false);
+          return throwError(() => err);
+        }),
+        tap(() => {
+          this.isAlive.set(true);
+        }),
+      );
+  }
 
   login(username: string, password: string, remember: boolean) {
     const url = `${this.BASE_URL}/login`;
@@ -26,12 +45,12 @@ export class AuthService {
     );
   }
 
-  refresh(sessionToken: string) {
+  refreshToken(sessionToken: string) {
     const url = `${this.BASE_URL}/refresh`;
     const headers = { "Authorization": `Bearer ${sessionToken}` };
     return this.http.post<RefreshResponse>(url, null, { headers }).pipe(
       tap((res) => {
-        this.setUserInfo(this.parseJWT(res.access_token).username);        
+        this.setUserInfo(this.parseJWT(res.access_token).username);
         this.setAccessToken(res.access_token);
       }),
     );
@@ -52,7 +71,7 @@ export class AuthService {
 
   private setAccessToken(accessToken: string) {
     this.accessToken = accessToken;
-    this.loggedIn.set(true);
+    this.isLoggedIn.set(true);
   }
 
   private setUserInfo(username: string) {
@@ -62,7 +81,7 @@ export class AuthService {
   logout() {
     localStorage.removeItem(this.REFRESH_TOKEN_KEY);
     sessionStorage.removeItem(this.REFRESH_TOKEN_KEY);
-    this.loggedIn.set(false);
+    this.isLoggedIn.set(false);
     // TODO: Revoke refresh token
   }
 
