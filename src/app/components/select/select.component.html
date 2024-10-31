@@ -1,0 +1,8 @@
+<label for="distance" class="sr-only">Choose an optional distance radius</label>
+<select id="distance" [(ngModel)]="value"
+    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-e-lg border-s-gray-100 dark:border-s-gray-700 border-s-2 focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+    <option [ngValue]="0" selected>+0 km</option>
+    <option [ngValue]="5">+5 km</option>
+    <option [ngValue]="15">+15 km</option>
+    <option [ngValue]="30">+30 km</option>
+</select>

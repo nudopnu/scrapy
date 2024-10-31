@@ -38,21 +38,21 @@ export class InputComponent implements ControlValueAccessor, Validator {
   placeHolder = "";
   @Input()
   redirectTo = "";
+  @Input()
+  hasSibling: "none" | "left" | "right" | "both" = "none";
 
   messages: Map<string, string> = new Map();
 
   state: "default" | "success" | "invalid" | "disabled" = "default";
-  firstTouch = true;
-  touched = false;
+  initialized = false;
   errors = signal<any[]>([]);
 
   private _value: string = "";
   set value(val: string) {
-    this._value = val;
-    if (!this.firstTouch) {
-      this.touched = true;
+    if (val !== this._value) {
+      this._value = val;
+      // this.onChange(val); // Update the form control value
     }
-    this.firstTouch = false;
   }
   get value(): string {
     return this._value;
@@ -61,15 +61,22 @@ export class InputComponent implements ControlValueAccessor, Validator {
   classList = {
     input: {
       default:
-        "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
+        "bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
       disabled:
-        "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
+        "bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
       success:
-        "bg-green-50 border border-green-500 text-green-900 dark:text-green-400 placeholder-green-700 dark:placeholder-green-500 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-green-500",
+        "bg-green-50 border border-green-500 text-green-900 dark:text-green-400 placeholder-green-700 dark:placeholder-green-500 text-sm focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-green-500",
       invalid:
-        "bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500",
+        "bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500",
     },
   };
+  borderClass = {
+    "none": "rounded-lg",
+    "left": "rounded-e-lg",
+    "right": "rounded-s-lg",
+    "both": "",
+  };
+
   onChange = (ch: any) => {};
   onTouched = () => {};
 
@@ -85,6 +92,7 @@ export class InputComponent implements ControlValueAccessor, Validator {
 
   writeValue(v: any): void {
     this.value = v;
+    console.log("setting", this.label, v);
   }
 
   registerOnChange(fn: any): void {
@@ -100,17 +108,15 @@ export class InputComponent implements ControlValueAccessor, Validator {
   }
 
   markAsTouched() {
-    if (this.touched) {
-      return;
-    }
-    this.touched = true;
     this.onTouched();
   }
 
   validate(control: AbstractControl): ValidationErrors | null {
     setTimeout(() => {
-      if (control.errors && this.touched) {
-        const errorMesages = Object
+      let errorMesages: string[] = [];
+      if (control.errors && this.initialized) {
+        console.log(control.errors);
+        errorMesages = Object
           .entries(control.errors)
           .map(([err, errValue]) => {
             switch (err) {
@@ -122,10 +128,9 @@ export class InputComponent implements ControlValueAccessor, Validator {
                 return err;
             }
           });
-        this.errors.set(errorMesages);
-      } else {
-        this.errors.set([]);
       }
+      this.errors.set(errorMesages);
+      this.initialized = true;
     });
     return null;
   }
@@ -134,7 +139,7 @@ export class InputComponent implements ControlValueAccessor, Validator {
     this.onChange(this.value);
     this.markAsTouched();
   }
-  
+
   onEnterKey() {
     this.onChange(this.value);
     this.markAsTouched();
