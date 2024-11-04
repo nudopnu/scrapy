@@ -2,7 +2,12 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { catchError, throwError } from "rxjs";
-import { LoginResponse, RefreshResponse } from "../models/responses";
+import { CreateSearchAgent } from "../models/requests";
+import {
+  AgentResponse,
+  LoginResponse,
+  RefreshResponse,
+} from "../models/responses";
 
 @Injectable({
   providedIn: "root",
@@ -33,7 +38,13 @@ export class ApiService {
 
   getAgents() {
     const url = `${this.BASE_URL}/agents`;
-    return this.http.get(url)
+    return this.http.get<AgentResponse[]>(url)
+      .pipe(catchError(this.handleError.bind(this)));
+  }
+
+  createAgent(createAgentRequest: CreateSearchAgent) {
+    const url = `${this.BASE_URL}/agents`;
+    return this.http.post<AgentResponse>(url, createAgentRequest)
       .pipe(catchError(this.handleError.bind(this)));
   }
 

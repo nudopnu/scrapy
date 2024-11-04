@@ -2,6 +2,8 @@ import { Component, inject } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { InputComponent } from "../input/input.component";
 import { SelectComponent } from "../select/select.component";
+import { ApiService } from "../../services/api.service";
+import { CreateSearchAgent } from "../../models/requests";
 
 @Component({
   selector: "fs-create-agent",
@@ -17,6 +19,7 @@ export class CreateAgentComponent {
     postalCode: ["", [Validators.required, Validators.minLength(3)]],
     distance: [0, [Validators.required]],
   });
+  apiService = inject(ApiService);
   isSubmitting = false;
 
   onClickSubmit() {
@@ -30,6 +33,15 @@ export class CreateAgentComponent {
     if (!this.form.valid || !distance || !name || !postalCode || !searchTerm) {
       return;
     }
-    console.log(this.form.value);
+    this.submit({
+      distance,
+      keyword: searchTerm,
+      name,
+      postal_code: postalCode,
+    });
+  }
+
+  submit(agent: CreateSearchAgent) {
+    this.apiService.createAgent(agent).subscribe((res) => console.log(res));
   }
 }

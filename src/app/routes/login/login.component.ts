@@ -54,6 +54,9 @@ export class LoginComponent {
     this.authService.login(username, password, remember).pipe(
       catchError((err) => {
         this.isSubmitting = false;
+        if (err.status === 0) {
+          this.serverError = "The server seems to be offline";
+        }
         if (err.message) {
           this.serverError = err.message;
         }
