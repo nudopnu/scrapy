@@ -1,45 +1,51 @@
-import { HttpInterceptorFn, HttpStatusCode } from "@angular/common/http";
-import { inject } from "@angular/core";
-import { catchError, of, switchMap, throwError } from "rxjs";
+import {
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+  HttpStatusCode,
+} from "@angular/common/http";
+import { inject, Injectable } from "@angular/core";
+import { catchError, Observable, switchMap, throwError } from "rxjs";
 import { AuthService } from "../services/auth.service";
 
-export const httpInterceptor: HttpInterceptorFn = (req, next) => {
-  const auth = inject(AuthService);
-  const accessToken = auth.accessToken;
-  const refreshToken = auth.getRefreshToken();
-  console.log("[INTERCEPTOR]", req);
-  if (accessToken) {
-    console.log(auth.parseJWT(accessToken));
-    req = req.clone({
-      headers: req.headers.set("Authorization", `Bearer ${accessToken}`),
-    });
+@Injectable()
+export class AuthInterceptor implements HttpInterceptor {
+  auth = inject(AuthService);
+  isRefreshing = false;
+
+  intercept(
+    req: HttpRequest<any>,
+    next: HttpHandler,
+  ): Observable<HttpEvent<any>> {
+    const accessToken = this.auth.accessToken;
+    const refreshToken = this.auth.getRefreshToken();
+    if (
+      accessToken &&
+      Math.floor(Date.now() / 1000) < this.auth.parseJWT(accessToken).exp
+    ) {
+      req = req.clone({
+        headers: req.headers.set("Authorization", `Bearer ${accessToken}`),
+      });
+    }
+    return next.handle(req).pipe(catchError((err) => {
+      if (
+        err.status === HttpStatusCode.Unauthorized && !this.isRefreshing &&
+        refreshToken
+      ) {
+        this.isRefreshing = true;
+        return this.auth.refreshToken(refreshToken)
+          .pipe(
+            switchMap((res) => {
+              this.isRefreshing = false;
+              req = req.clone({
+                setHeaders: { Authorization: `Bearer ${res.access_token}` },
+              });
+              return next.handle(req);
+            }),
+          );
+      }
+      return throwError(() => err);
+    }));
   }
-  return next(req)
-    .pipe(
-      catchError((error) => {
-        console.log(error);
-        if (error.status === 0 ){
-          return throwError(() => ({
-            error: new Error("The server seems to be offline"),
-          }));
-        }
-        if (error.status != HttpStatusCode.Unauthorized || !refreshToken) {
-          return throwError(() => error);
-        }
-        return auth.refreshToken(refreshToken).pipe(
-          catchError((_) => {
-            auth.logout();
-            return throwError(() => ({
-              error: new Error("invalid refresh token"),
-            }));
-          }),
-          switchMap((res) => {
-            req = req.clone({
-              setHeaders: { Authorization: `Bearer ${res.access_token}` },
-            });
-            return next(req);
-          }),
-        );
-      }),
-    );
-};
+}

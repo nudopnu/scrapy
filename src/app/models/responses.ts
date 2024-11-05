@@ -18,6 +18,7 @@ export interface AgentResponse {
     last_fetched_at: NullTime;
     created_at:      Date;
     updated_at:      Date;
+    thumbnail_url?:  string;
 }
 
 export interface NullTime {

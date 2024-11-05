@@ -1,16 +1,24 @@
-import { ApplicationConfig, provideZoneChangeDetection } from "@angular/core";
+import {
+  ApplicationConfig,
+  LOCALE_ID,
+  provideZoneChangeDetection,
+} from "@angular/core";
 import {
   provideRouter,
   withComponentInputBinding,
   withRouterConfig,
 } from "@angular/router";
 
-import { provideHttpClient, withInterceptors } from "@angular/common/http";
+import {
+  HTTP_INTERCEPTORS,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from "@angular/common/http";
 import { routes } from "./app.routes";
-import { httpInterceptor } from "./interceptors/http.interceptor";
+import { AuthInterceptor } from "./interceptors/http.interceptor";
 
-import localeDe from '@angular/common/locales/de';
 import { registerLocaleData } from "@angular/common";
+import localeDe from "@angular/common/locales/de";
 
 registerLocaleData(localeDe);
 
@@ -22,6 +30,8 @@ export const appConfig: ApplicationConfig = {
       withComponentInputBinding(),
       withRouterConfig({ onSameUrlNavigation: "reload" }),
     ),
-    provideHttpClient(withInterceptors([httpInterceptor])),
+    provideHttpClient(withInterceptorsFromDi()),
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: LOCALE_ID, useValue: "de-DE" },
   ],
 };

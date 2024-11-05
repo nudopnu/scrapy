@@ -1,22 +1,25 @@
-<div class="flex items-center space-x-3 rtl:space-x-reverse">
-    <div class="flex-shrink-0">
-        <img class="w-8 h-8 rounded-full" src="/docs/images/people/profile-picture-5.jpg" alt="Neil image">
-    </div>
+<div class="flex items-center mx-auto">
     <div class="flex-1 min-w-0">
         <p class="text-sm font-semibold text-gray-900 truncate dark:text-white">
             {{agent.name}}
         </p>
         <p class="text-sm text-gray-500 truncate dark:text-gray-400">
             @if (agent.last_fetched_at.Valid) {
-            zuletzt aktualisiert: {{agent.last_fetched_at.Time | date:"dd. MMM HH:mm": 'Europe/Berlin'}}
+            zuletzt aktualisiert: {{agent.last_fetched_at.Time | date:"dd. MMM HH:mm":"de-DE"}}
             } @else {
             zuletzt aktualisiert: -
             }
         </p>
     </div>
-    <span
-        class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
-        <span class="w-2 h-2 me-1 bg-green-500 rounded-full"></span>
-        Available
-    </span>
+    @if (agent.thumbnail_url) {
+    <div class="relative">
+        <div class="w-8 h-10 p-0.5 rounded ring-2 ring-gray-300 dark:ring-gray-500">
+            <img class="w-full h-full rounded object-cover"
+                [src]="agent.thumbnail_url"
+                alt="image description">
+        </div>
+        <span
+            class="absolute top-0 left-6 transform -translate-y-1/2 w-3.5 h-3.5 bg-blue-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
+    </div>
+    }
 </div>

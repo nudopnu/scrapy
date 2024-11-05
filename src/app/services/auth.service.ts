@@ -27,6 +27,7 @@ export class AuthService {
   refreshToken(sessionToken: string) {
     return this.apiService.refresh(sessionToken).pipe(
       tap((res) => {
+        console.log("[AuthService] Getting access token from refresh token...");
         this.setUserInfo(this.parseJWT(res.access_token).username);
         this.setAccessToken(res.access_token);
       }),
