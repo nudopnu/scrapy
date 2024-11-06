@@ -1,5 +1,9 @@
 import { Component, forwardRef, Input } from "@angular/core";
-import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from "@angular/forms";
+import {
+  ControlValueAccessor,
+  FormsModule,
+  NG_VALUE_ACCESSOR,
+} from "@angular/forms";
 import { InputComponent } from "../input/input.component";
 
 @Component({
@@ -14,7 +18,6 @@ import { InputComponent } from "../input/input.component";
     },
   ],
   templateUrl: "./select.component.html",
-  styleUrl: "./select.component.css",
 })
 export class SelectComponent implements ControlValueAccessor {
   @Input()
@@ -28,7 +31,6 @@ export class SelectComponent implements ControlValueAccessor {
 
   public set value(v: number) {
     if (v !== this._value) { // To prevent redundant updates
-      console.log(v); // Logging for debugging
       this._value = v;
       this.onChange(v);
     }

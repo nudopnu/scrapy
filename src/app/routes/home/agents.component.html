@@ -1,0 +1,7 @@
+<ul role="list" class="max-w-sm mx-auto divide-y divide-gray-200 dark:divide-gray-700 p-2">
+    @for (agent of agents; track $index) {
+    <li class="py-3 sm:py-4" (click)="onClick(agent)">
+        <fs-agent [agent]="agent"></fs-agent>
+    </li>
+    }
+</ul>

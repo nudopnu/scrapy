@@ -5,18 +5,17 @@ import {
   ReactiveFormsModule,
   Validators,
 } from "@angular/forms";
+import { Router } from "@angular/router";
 import { catchError, of } from "rxjs";
 import { InputComponent } from "../../components/input/input.component";
 import { ApiService } from "../../services/api.service";
 import { AuthService } from "../../services/auth.service";
-import { Router } from "@angular/router";
 
 @Component({
   selector: "fs-login",
   standalone: true,
   imports: [ReactiveFormsModule, InputComponent],
   templateUrl: "./login.component.html",
-  styleUrl: "./login.component.css",
 })
 export class LoginComponent {
   @Input()
@@ -42,7 +41,7 @@ export class LoginComponent {
     const password = this.form.value.password;
     const remember = !!this.form.value.remember;
     if (this.form.errors || !username || !password) {
-      this.form.markAllAsTouched() 
+      this.form.markAllAsTouched();
       return;
     }
     this.submit(username, password, remember);

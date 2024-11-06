@@ -1,0 +1,14 @@
+<div class="h-full rounded-2xl overflow-hidden" (click)="onClick($event)">
+    <figure class="slide h-full relative">
+        <img class="object-cover h-full" [src]="ad.images[imageIndex].image_url" alt="person 1">
+    </figure>
+</div>
+<div class="absolute bottom-0 p-5">
+    <a href="#">
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-white" [innerHTML]="ad.title">,
+        </h5>
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-white" >{{ad.price}}</h5>
+    </a>
+    <p class="mb-3 font-normal text-white" [innerHTML]="ad.description"></p>
+    <a [href]="ad.url" class="font-medium text-blue-500 dark:text-blue-500 hover:underline">Read more</a>
+</div>

@@ -1,10 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  inject,
-  OnChanges,
-  SimpleChanges,
-} from "@angular/core";
+import { Component, inject, OnChanges, SimpleChanges } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import { initFlowbite } from "flowbite";
 import { AuthService } from "../../services/auth.service";
@@ -15,7 +9,6 @@ import { AvatarComponent } from "../avatar/avatar.component";
   standalone: true,
   imports: [RouterLink, AvatarComponent],
   templateUrl: "./navigation.component.html",
-  styleUrl: "./navigation.component.css",
 })
 export class NavigationComponent implements OnChanges {
   auth = inject(AuthService);

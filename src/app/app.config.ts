@@ -15,7 +15,7 @@ import {
   withInterceptorsFromDi,
 } from "@angular/common/http";
 import { routes } from "./app.routes";
-import { AuthInterceptor } from "./interceptors/http.interceptor";
+import { AuthInterceptor } from "./interceptors/auth.interceptor";
 
 import { registerLocaleData } from "@angular/common";
 import localeDe from "@angular/common/locales/de";

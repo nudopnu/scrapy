@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { catchError, throwError } from "rxjs";
 import { CreateSearchAgent } from "../models/requests";
 import {
+  Ad,
   AgentResponse,
   LoginResponse,
   RefreshResponse,
@@ -39,6 +40,12 @@ export class ApiService {
   getAgents() {
     const url = `${this.BASE_URL}/agents`;
     return this.http.get<AgentResponse[]>(url)
+      .pipe(catchError(this.handleError.bind(this)));
+  }
+
+  getAdsByAgent(id: number) {
+    const url = `${this.BASE_URL}/agents/${id}`;
+    return this.http.get<Ad[]>(url)
       .pipe(catchError(this.handleError.bind(this)));
   }
 
