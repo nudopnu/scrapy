@@ -4,6 +4,7 @@ import { CreateSearchAgent } from "../../models/requests";
 import { ApiService } from "../../services/api.service";
 import { InputComponent } from "../input/input.component";
 import { SelectComponent } from "../select/select.component";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "fs-create-agent",
@@ -12,6 +13,7 @@ import { SelectComponent } from "../select/select.component";
   templateUrl: "./create-agent.component.html",
 })
 export class CreateAgentComponent {
+  router = inject(Router);
   form = inject(FormBuilder).group({
     name: ["", [Validators.required, Validators.minLength(3)]],
     searchTerm: ["", [Validators.required, Validators.minLength(3)]],
@@ -41,6 +43,9 @@ export class CreateAgentComponent {
   }
 
   submit(agent: CreateSearchAgent) {
-    this.apiService.createAgent(agent).subscribe((res) => console.log(res));
+    this.apiService.createAgent(agent).subscribe((res) => {
+      console.log(res);
+      this.router.navigate(['agents'])
+    });
   }
 }

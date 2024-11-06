@@ -1,6 +1,6 @@
 import { JsonPipe } from "@angular/common";
 import { Component, inject, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { Router, RouterModule } from "@angular/router";
 import { AgentCardComponent } from "../../components/agent-card/agent.component";
 import { MockAgents as MOCK_AGENTS } from "../../mock/agents.mock";
 import { AgentResponse } from "../../models/responses";
@@ -9,7 +9,7 @@ import { ApiService } from "../../services/api.service";
 @Component({
   selector: "fs-agents",
   standalone: true,
-  imports: [JsonPipe, AgentCardComponent],
+  imports: [JsonPipe, AgentCardComponent, RouterModule],
   templateUrl: "./agents.component.html",
 })
 export class AgentsComponent implements OnInit {

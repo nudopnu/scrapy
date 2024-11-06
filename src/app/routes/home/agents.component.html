@@ -3,5 +3,19 @@
     <li class="py-3 sm:py-4" (click)="onClick(agent)">
         <fs-agent [agent]="agent"></fs-agent>
     </li>
+    } @empty {
+    <div class="absolute inset-0 mx-auto max-w-lg p-12 flex flex-col justify-center items-center z-10">
+        <h5 class="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">No agents here yet...</h5>
+        <p class="text-center mb-3 font-normal text-gray-500 dark:text-gray-400">You can create a new one by pressing on the plus icon.</p>
+    </div>
     }
 </ul>
+
+<div data-dial-init class="fixed end-4 bottom-20 group z-50">
+    <button type="button"  aria-expanded="false" class="flex items-center justify-center text-white bg-blue-700 rounded-full w-14 h-14 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800" [routerLink]="['/agents/create']" >
+        <svg class="w-5 h-5 transition-transform " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+        </svg>
+        <span class="sr-only">Open actions menu</span>
+    </button>
+</div>

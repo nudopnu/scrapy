@@ -12,7 +12,7 @@ export class AdComponent implements OnChanges {
   @Input()
   ad!: Ad;
   imageIndex = 0;
-  
+
   ngOnChanges(): void {
     this.imageIndex = 0;
   }
@@ -29,7 +29,7 @@ export class AdComponent implements OnChanges {
         this.imageIndex = this.imageIndex + 1;
       }
       this.imageIndex %= this.ad.images.length;
-      console.log(this.imageIndex, this.ad.images.length);
+      console.log(this.ad.id, this.ad.images[this.imageIndex].image_url);
     });
     event.stopPropagation();
   }

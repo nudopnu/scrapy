@@ -45,7 +45,9 @@ export class SwipeDirective {
   @HostListener("touchstart", ["$event"])
   @HostListener("mousedown", ["$event"])
   onMouseDown(event: MouseEvent) {
-    event.preventDefault();
+    if (!(event instanceof TouchEvent)) {
+      event.preventDefault();
+    }
     this.isHolding = true;
     const hostElement = this.host.nativeElement as HTMLElement;
     hostElement.style.cursor = "grabbing";
