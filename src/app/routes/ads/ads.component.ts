@@ -1,3 +1,4 @@
+import { CommonModule, JsonPipe } from "@angular/common";
 import {
     AfterContentInit,
     Component,
@@ -6,13 +7,11 @@ import {
     Input,
     ViewChild,
 } from "@angular/core";
-import { ApiService } from "../../services/api.service";
-import { Ad } from "../../models/responses";
-import { CommonModule, JsonPipe } from "@angular/common";
-import { State, SwipeDirective } from "../../directives/swipe.directive";
 import { AdComponent } from "../../components/ad/ad.component";
+import { State, SwipeDirective } from "../../directives/swipe.directive";
 import { MockAds } from "../../mock/ads.mock";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Ad } from "../../models/responses";
+import { ApiService } from "../../services/api.service";
 
 @Component({
     selector: "fs-ads",
@@ -24,14 +23,13 @@ import { ActivatedRoute, Router } from "@angular/router";
 export class AdsComponent implements AfterContentInit {
     @Input()
     agentId = "1";
+    @ViewChild("front")
+    frontElementRef!: ElementRef;
     apiService = inject(ApiService);
     ads: Ad[] = [];
 
-    @ViewChild("front")
-    frontElementRef!: ElementRef;
-
     alpha = 0;
-    frontTransform = "";
+    frontTransform = "translate3d(0, 0, 0)";
     backTransform = "translate3d(0, 0, -200px)";
     frontTransformOrigin = "";
     backTransformOrigin = "";
@@ -45,8 +43,8 @@ export class AdsComponent implements AfterContentInit {
             (res) => {
                 this.ads = res;
                 setTimeout(() => {
-                    this.frontTransform = "translate3d(0, 0, 0)";
-                });
+                    this.frontTransform = "translate3d(0, 0, 1px)";
+                }, 123);
             },
         );
     }

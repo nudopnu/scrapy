@@ -1,28 +1,29 @@
 @let frontAd = ads[0];
 @let backAd = ads[1];
 
-<div class="fixed inset-0 bottom-16 w-full z-50 bg-white">
+<div class="fixed inset-0 bottom-16 w-full bg-white">
     @defer {
     <main class="mx-auto max-w-lg container flex justify-center h-full">
+        @if(frontAd) {
+            <div class="absolute h-full w-full mx-auto p-2 z-10" #front fsSwipe (onDrag)="onDrag($event)"
+                (onDragStart)="onDragStart($event)" (onDragEnd)="onDragEnd($event)" (transitionend)="onTransitionEnd()"
+                [ngStyle]="{transform: frontTransform, transformOrigin: frontTransformOrigin, transition: transition}">
+                <fs-ad [ad]="frontAd"></fs-ad>
+            </div>
+            }
         @if (backAd) {
-        <div #back class="absolute h-full w-full max-w-lg mx-auto p-2"
+        <div #back class="absolute h-full w-full max-w-lg mx-auto p-2 z-0"
             [ngStyle]="{transform: backTransform, transition: transition}">
             <fs-ad [ad]="backAd"></fs-ad>
         </div>
         } @else {
-        <div class="absolute w-full h-full max-w-lg mx-auto p-12 flex flex-col justify-center items-center">
+        <div class="absolute w-full h-full max-w-lg mx-auto p-12 flex flex-col justify-center items-center z-10">
             <h5 class="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">That's it...</h5>
             <p class="text-center mb-3 font-normal text-gray-500 dark:text-gray-400">You can check again later, see your
                 bookmarks again, or check your other agents.</p>
         </div>
         }
-        @if(frontAd) {
-        <div class="absolute h-full max-w-lg mx-auto p-2" #front fsSwipe (onDrag)="onDrag($event)"
-            (onDragStart)="onDragStart($event)" (onDragEnd)="onDragEnd($event)" (transitionend)="onTransitionEnd()"
-            [ngStyle]="{transform: frontTransform, transformOrigin: frontTransformOrigin, transition: transition}">
-            <fs-ad [ad]="frontAd"></fs-ad>
-        </div>
-        }
+
     </main>
     } @loading {
         loading
