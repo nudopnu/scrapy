@@ -4,15 +4,15 @@ import {
     Component,
     ElementRef,
     inject,
-    Input,
-    ViewChild,
+    input,
+    viewChild
 } from "@angular/core";
+import { environment } from "../../../environments/environment";
 import { AdComponent } from "../../components/ad/ad.component";
 import { State, SwipeDirective } from "../../directives/swipe.directive";
 import { MockAds } from "../../mock/ads.mock";
 import { Ad } from "../../models/responses";
 import { ApiService } from "../../services/api.service";
-import { environment } from "../../../environments/environment";
 
 @Component({
     selector: "fs-ads",
@@ -21,10 +21,8 @@ import { environment } from "../../../environments/environment";
     styleUrl: "./ads.component.css"
 })
 export class AdsComponent implements AfterContentInit {
-    @Input()
-    agentId = "1";
-    @ViewChild("front")
-    frontElementRef!: ElementRef;
+    agentId = input.required<string>();
+    frontElementRef = viewChild.required<ElementRef<HTMLElement>>("front");
     apiService = inject(ApiService);
     ads: Ad[] = [];
 
@@ -43,7 +41,7 @@ export class AdsComponent implements AfterContentInit {
             this.ads = MockAds;
             return;
         }
-        this.apiService.getAdsByAgent(parseInt(this.agentId)).subscribe(
+        this.apiService.getAdsByAgent(parseInt(this.agentId())).subscribe(
             (res) => {
                 this.ads = res;
                 setTimeout(() => {
@@ -55,7 +53,7 @@ export class AdsComponent implements AfterContentInit {
 
     onDragStart(state: State) {
         const { startY } = state;
-        const frontElement = this.frontElementRef.nativeElement as HTMLElement;
+        const frontElement = this.frontElementRef().nativeElement;
         const cy = frontElement.clientTop + frontElement.clientHeight / 2;
         const dy = startY - cy;
         if (dy < 0) {
@@ -70,7 +68,7 @@ export class AdsComponent implements AfterContentInit {
 
     onDrag(state: State) {
         const { x, y, startX, startY } = state;
-        const frontElement = this.frontElementRef.nativeElement as HTMLElement;
+        const frontElement = this.frontElementRef().nativeElement;
         const dx = x - startX;
         const dy = y - startY;
         const dxFrac = dx / frontElement.clientWidth;

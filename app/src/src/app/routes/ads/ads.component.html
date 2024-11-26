@@ -5,12 +5,12 @@
     @defer {
     <main class="mx-auto max-w-lg container flex justify-center h-full">
         @if(frontAd) {
-            <div class="absolute h-full w-full mx-auto p-2 z-10" #front fsSwipe (onDrag)="onDrag($event)"
-                (onDragStart)="onDragStart($event)" (onDragEnd)="onDragEnd($event)" (transitionend)="onTransitionEnd()"
-                [ngStyle]="{transform: frontTransform, transformOrigin: frontTransformOrigin, transition: transition}">
-                <fs-ad [ad]="frontAd"></fs-ad>
-            </div>
-            }
+        <div class="absolute h-full w-full mx-auto p-2 z-10" #front fsSwipe (onDrag)="onDrag($event)"
+            (onDragStart)="onDragStart($event)" (onDragEnd)="onDragEnd($event)" (transitionend)="onTransitionEnd()"
+            [ngStyle]="{transform: frontTransform, transformOrigin: frontTransformOrigin, transition: transition}">
+            <fs-ad [ad]="frontAd"></fs-ad>
+        </div>
+        }
         @if (backAd) {
         <div #back class="absolute h-full w-full max-w-lg mx-auto p-2 z-0"
             [ngStyle]="{transform: backTransform, transition: transition}">
@@ -26,8 +26,8 @@
 
     </main>
     } @loading {
-        loading
+    loading
     }@placeholder {
-        placeholder
+    placeholder
     }
 </div>
