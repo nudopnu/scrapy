@@ -2,6 +2,20 @@
 
 This is a prototype full-stack application. It lets you create search agents to search
 
+## Setup
+
+For development run:
+
+```bash
+docker compose -f docker-compose.dev.yaml up
+```
+
+For production run:
+
+```bash
+docker compose up
+```
+
 ## Modify database
 
 Install sqlc with 

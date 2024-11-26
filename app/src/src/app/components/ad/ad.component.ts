@@ -1,4 +1,4 @@
-import { Component, effect, input } from "@angular/core";
+import { Component, effect, HostListener, input } from "@angular/core";
 import { Ad } from "../../models/responses";
 
 @Component({
@@ -22,6 +22,7 @@ export class AdComponent {
     });
   }
 
+  @HostListener('click', ['$event'])
   onClick(event: MouseEvent) {
     const { clientX, clientY } = event;
     const targetRect = (event.target as HTMLElement)
