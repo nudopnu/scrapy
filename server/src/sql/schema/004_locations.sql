@@ -1,0 +1,11 @@
+-- +goose Up
+CREATE TABLE locations (
+    id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    postal_code TEXT UNIQUE NOT NULL,
+    location_id TEXT UNIQUE NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- +goose Down
+DROP TABLE locations;

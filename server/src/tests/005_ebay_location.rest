@@ -1,0 +1,14 @@
+@query=54292
+GET https://api.kleinanzeigen.de/api/locations.json
+    ?depth=1
+    &q={{query}}
+Accept-Encoding: gzip
+Authorization: Basic YW5kcm9pZDpUYVI2MHBFdHRZ
+Connection: Keep-Alive
+Host: api.kleinanzeigen.de
+User-Agent: Kleinanzeigen/100.20.0 (Android 9; Asus ASUS_Z01QD)
+X-EBAYK-APP: 38f30879-61bc-4589-bb91-ec1aeb066a8d1728011895290
+X-EBAYK-GROUPS: BAND-7832-Category-Alerts_B|BAND-8364_B|BAND-8483_composeSlider_A|BLN-19260-cis-login_B|BLN-24652_category_alert_B|backend_ab_bln13364_A|backend_ab_bln418_B|backend_ab_bln_abc_B|backend_ab_bln_abc2_A
+X-EBAYK-USERID-TOKEN: "X-ECG-IN": id,localized-name,longitude,latitude,radius,regions
+X-ECG-USER-AGENT: ebayk-android-app-100.20.0
+X-ECG-USER-VERSION: 100.20.0

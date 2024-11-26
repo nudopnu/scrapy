@@ -1,0 +1,12 @@
+-- +goose Up
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    username TEXT UNIQUE NOT NULL,
+    role TEXT NOT NULL,
+    hashed_password TEXT NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- +goose Down
+DROP TABLE users;

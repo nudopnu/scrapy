@@ -1,0 +1,20 @@
+### Login
+# @name login
+POST http://localhost:8080/api/v1/login
+
+{
+    "username": "foo",
+    "password": "bar"
+}
+
+@TOKEN = {{login.response.body.$.access_token}}
+###
+POST http://localhost:8080/api/v1/agents
+Authorization: Bearer {{TOKEN}}
+
+{
+    "name": "Ebikes in Trier",
+    "keyword": "Ebike",
+    "postal_code": "54292",
+    "distance": 3
+}

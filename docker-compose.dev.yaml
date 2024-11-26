@@ -1,0 +1,40 @@
+services:
+
+  app:
+    build:
+      context: app
+      dockerfile: Dockerfile.dev
+    ports:
+    - 4200:4200
+    volumes:
+    - ./app/src:/app
+    - /app/node_modules
+    command: ["npm", "run", "docker:dev"]
+  
+  server:
+    build:
+      context: .
+      args:
+        - DOCKER_BUILDKIT=1
+    ports:
+    - 8000:8000 
+    env_file:
+    - .env
+    depends_on:
+    - db
+    - migrate
+  
+  db:
+    image: postgres:17.1
+    environment:
+      POSTGRES_USER: ${DB_USERNAME:?No postgres username provided}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?No postgres password provided}
+      POSTGRES_DB: "scrapy"
+  
+  migrate:
+    build: sql
+    depends_on:
+    - db
+    env_file:
+    - .env
+    command: ["up"]

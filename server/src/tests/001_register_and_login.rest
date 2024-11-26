@@ -1,0 +1,18 @@
+@USER = foo
+@PASSWORD = bar
+
+### Register
+POST http://localhost:8080/api/v1/users
+
+{
+    "username": "{{USER}}",
+    "password": "{{PASSWORD}}"
+}
+
+### Login
+POST http://localhost:8080/api/v1/users
+
+{
+    "username": "{{USER}}",
+    "password": "{{PASSWORD}}"
+}

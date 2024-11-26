@@ -2,3 +2,30 @@ services:
   
   app:
     build: app
+    ports:
+      - 80:80
+  
+  server:
+    build: server
+    ports:
+    - 8080:8080 
+    env_file:
+    - .env
+    depends_on:
+    - db
+    - migrate
+
+  migrate:
+    build: server/src/sql
+    depends_on:
+    - db
+    env_file:
+    - .env
+    command: ["up"]
+  
+  db:
+    image: postgres:17.1
+    environment:
+      POSTGRES_USER: ${DB_USERNAME:?No postgres username provided}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?No postgres password provided}
+      POSTGRES_DB: "scrapy"

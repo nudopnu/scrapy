@@ -1,0 +1,18 @@
+# Login as admin 
+# @name login
+POST http://localhost:8080/api/v1/login
+
+{
+    "username": "{{$dotenv ADMIN_USERNAME}}",
+    "password": "{{$dotenv ADMIN_PASSWORD}}"
+}
+
+@TOKEN = {{login.response.body.$.access_token}}
+
+### Start main loop
+POST http://localhost:8080/api/v1/loop/start
+Authorization: Bearer {{TOKEN}}
+
+### Stop main loop
+POST http://localhost:8080/api/v1/loop/stop
+Authorization: Bearer {{TOKEN}}
