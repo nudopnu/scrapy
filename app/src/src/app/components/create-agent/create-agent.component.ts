@@ -7,10 +7,9 @@ import { SelectComponent } from "../select/select.component";
 import { Router } from "@angular/router";
 
 @Component({
-  selector: "fs-create-agent",
-  standalone: true,
-  imports: [InputComponent, ReactiveFormsModule, SelectComponent],
-  templateUrl: "./create-agent.component.html",
+    selector: "fs-create-agent",
+    imports: [InputComponent, ReactiveFormsModule, SelectComponent],
+    templateUrl: "./create-agent.component.html"
 })
 export class CreateAgentComponent {
   router = inject(Router);

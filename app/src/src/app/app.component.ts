@@ -8,11 +8,10 @@ import { ApiService } from "./services/api.service";
 import { AuthService } from "./services/auth.service";
 
 @Component({
-  selector: "fs-root",
-  standalone: true,
-  imports: [RouterOutlet, NavigationComponent, BottomNavigationComponent],
-  templateUrl: "./app.component.html",
-  styleUrl: "./app.component.css",
+    selector: "fs-root",
+    imports: [RouterOutlet, NavigationComponent, BottomNavigationComponent],
+    templateUrl: "./app.component.html",
+    styleUrl: "./app.component.css"
 })
 export class AppComponent implements OnInit {
   title = "flowbite-sample";

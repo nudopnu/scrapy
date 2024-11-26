@@ -1,4 +1,3 @@
-import { JsonPipe } from "@angular/common";
 import { Component, effect, Input, signal } from "@angular/core";
 import {
   AbstractControl,
@@ -11,22 +10,21 @@ import {
 } from "@angular/forms";
 
 @Component({
-  selector: "fs-input",
-  standalone: true,
-  imports: [FormsModule, JsonPipe],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      multi: true,
-      useExisting: InputComponent,
-    },
-    {
-      provide: NG_VALIDATORS,
-      multi: true,
-      useExisting: InputComponent,
-    },
-  ],
-  templateUrl: "./input.component.html",
+    selector: "fs-input",
+    imports: [FormsModule],
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            multi: true,
+            useExisting: InputComponent,
+        },
+        {
+            provide: NG_VALIDATORS,
+            multi: true,
+            useExisting: InputComponent,
+        },
+    ],
+    templateUrl: "./input.component.html"
 })
 export class InputComponent implements ControlValueAccessor, Validator {
   @Input()

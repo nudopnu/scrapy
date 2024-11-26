@@ -5,10 +5,9 @@ import { AuthService } from "../../services/auth.service";
 import { AvatarComponent } from "../avatar/avatar.component";
 
 @Component({
-  selector: "fs-navigation",
-  standalone: true,
-  imports: [RouterLink, AvatarComponent],
-  templateUrl: "./navigation.component.html",
+    selector: "fs-navigation",
+    imports: [RouterLink, AvatarComponent],
+    templateUrl: "./navigation.component.html"
 })
 export class NavigationComponent implements OnChanges {
   auth = inject(AuthService);

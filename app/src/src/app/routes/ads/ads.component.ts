@@ -1,4 +1,4 @@
-import { CommonModule, JsonPipe } from "@angular/common";
+import { CommonModule } from "@angular/common";
 import {
     AfterContentInit,
     Component,
@@ -15,10 +15,9 @@ import { ApiService } from "../../services/api.service";
 
 @Component({
     selector: "fs-ads",
-    standalone: true,
-    imports: [JsonPipe, CommonModule, SwipeDirective, AdComponent],
+    imports: [CommonModule, SwipeDirective, AdComponent],
     templateUrl: "./ads.component.html",
-    styleUrl: "./ads.component.css",
+    styleUrl: "./ads.component.css"
 })
 export class AdsComponent implements AfterContentInit {
     @Input()

@@ -4,20 +4,18 @@ import {
   FormsModule,
   NG_VALUE_ACCESSOR,
 } from "@angular/forms";
-import { InputComponent } from "../input/input.component";
 
 @Component({
-  selector: "fs-select",
-  standalone: true,
-  imports: [InputComponent, FormsModule],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => SelectComponent),
-      multi: true,
-    },
-  ],
-  templateUrl: "./select.component.html",
+    selector: "fs-select",
+    imports: [FormsModule],
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => SelectComponent),
+            multi: true,
+        },
+    ],
+    templateUrl: "./select.component.html"
 })
 export class SelectComponent implements ControlValueAccessor {
   @Input()

@@ -12,10 +12,9 @@ import { ApiService } from "../../services/api.service";
 import { AuthService } from "../../services/auth.service";
 
 @Component({
-  selector: "fs-login",
-  standalone: true,
-  imports: [ReactiveFormsModule, InputComponent],
-  templateUrl: "./login.component.html",
+    selector: "fs-login",
+    imports: [ReactiveFormsModule, InputComponent],
+    templateUrl: "./login.component.html"
 })
 export class LoginComponent {
   @Input()

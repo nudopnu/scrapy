@@ -3,10 +3,9 @@ import { initFlowbite } from "flowbite";
 import { AuthService } from "../../services/auth.service";
 
 @Component({
-  selector: "fs-avatar",
-  standalone: true,
-  imports: [],
-  templateUrl: "./avatar.component.html",
+    selector: "fs-avatar",
+    imports: [],
+    templateUrl: "./avatar.component.html"
 })
 export class AvatarComponent  implements AfterViewInit{
   auth = inject(AuthService);

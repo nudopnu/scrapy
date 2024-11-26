@@ -1,4 +1,3 @@
-import { JsonPipe } from "@angular/common";
 import { Component, inject, OnInit } from "@angular/core";
 import { Router, RouterModule } from "@angular/router";
 import { AgentCardComponent } from "../../components/agent-card/agent.component";
@@ -7,10 +6,9 @@ import { AgentResponse } from "../../models/responses";
 import { ApiService } from "../../services/api.service";
 
 @Component({
-  selector: "fs-agents",
-  standalone: true,
-  imports: [JsonPipe, AgentCardComponent, RouterModule],
-  templateUrl: "./agents.component.html",
+    selector: "fs-agents",
+    imports: [AgentCardComponent, RouterModule],
+    templateUrl: "./agents.component.html"
 })
 export class AgentsComponent implements OnInit {
   router = inject(Router);

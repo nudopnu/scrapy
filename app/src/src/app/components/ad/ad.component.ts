@@ -2,11 +2,10 @@ import { Component, Input, OnChanges } from "@angular/core";
 import { Ad } from "../../models/responses";
 
 @Component({
-  selector: "fs-ad",
-  standalone: true,
-  imports: [],
-  templateUrl: "./ad.component.html",
-  styleUrl: "./ad.component.css",
+    selector: "fs-ad",
+    imports: [],
+    templateUrl: "./ad.component.html",
+    styleUrl: "./ad.component.css"
 })
 export class AdComponent implements OnChanges {
   @Input()
