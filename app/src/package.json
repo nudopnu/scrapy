@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:mock": "ng serve --configuration=mock",
     "docker:dev": "ng serve --host=0.0.0.0 --poll 500",
     "build": "ng build",
     "build:prod": "ng build --configuration production",

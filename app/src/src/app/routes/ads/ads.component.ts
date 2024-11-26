@@ -12,6 +12,7 @@ import { State, SwipeDirective } from "../../directives/swipe.directive";
 import { MockAds } from "../../mock/ads.mock";
 import { Ad } from "../../models/responses";
 import { ApiService } from "../../services/api.service";
+import { environment } from "../../../environments/environment";
 
 @Component({
     selector: "fs-ads",
@@ -37,7 +38,11 @@ export class AdsComponent implements AfterContentInit {
     isSwipingOut = false;
 
     ngAfterContentInit(): void {
-        console.log(this.agentId);
+        console.log(environment);
+        if (environment.mock) {
+            this.ads = MockAds;
+            return;
+        }
         this.apiService.getAdsByAgent(parseInt(this.agentId)).subscribe(
             (res) => {
                 this.ads = res;
@@ -73,9 +78,8 @@ export class AdsComponent implements AfterContentInit {
         const backTransZ = -200 * (1 - this.alpha);
         const frontRotZ = this.flipRot * dxFrac * 35;
         this.backTransform = `translate3d(0, 0, ${backTransZ}px)`;
-        this.frontTransform = `translate3d(${dx * 0.7}px, ${
-            dy * 1.3
-        }px, 0) rotateZ(${frontRotZ}deg)`;
+        this.frontTransform = `translate3d(${dx * 0.7}px, ${dy * 1.3
+            }px, 0) rotateZ(${frontRotZ}deg)`;
     }
 
     onDragEnd(state: State) {
@@ -87,11 +91,9 @@ export class AdsComponent implements AfterContentInit {
             this.isSwipingOut = true;
             setTimeout(() => {
                 this.transition = "transform 0.4s ease";
-                this.frontTransform = `translate3d(${
-                    direction * document.body.clientWidth
-                }px, ${dy * 1.3}px, 0) rotateZ(${
-                    this.flipRot * direction * 45
-                }deg)`;
+                this.frontTransform = `translate3d(${direction * document.body.clientWidth
+                    }px, ${dy * 1.3}px, 0) rotateZ(${this.flipRot * direction * 45
+                    }deg)`;
                 this.backTransform = `translate3d(0, 0, 0)`;
             });
         } else {
