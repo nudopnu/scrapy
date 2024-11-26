@@ -131,7 +131,7 @@ SELECT ad_id, images, id, title, price, description, location, postal_code, cate
 	JOIN params p on ap.params_id = p.id
 	JOIN results r on r.params_id = p.id
 	JOIN images i on i.ad_id = r.ad_id
-	WHERE a.id = $1 AND i.label = 'XXL'
+	WHERE a.id = $1 AND i.label = 'extraLarge'
 	GROUP BY r.ad_id
 ) as images
 JOIN ads on ads.id = images.ad_id

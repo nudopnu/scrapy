@@ -13,16 +13,26 @@ services:
   
   server:
     build:
-      context: .
+      context: server
       args:
         - DOCKER_BUILDKIT=1
     ports:
-    - 8000:8000 
+    - 8080:8080 
     env_file:
     - .env
     depends_on:
     - db
     - migrate
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4_container
+    restart: always
+    ports:
+      - "8888:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user-name@domain-name.com
+      PGADMIN_DEFAULT_PASSWORD: strong-password
   
   db:
     image: postgres:17.1
@@ -32,7 +42,7 @@ services:
       POSTGRES_DB: "scrapy"
   
   migrate:
-    build: sql
+    build: server/src/sql
     depends_on:
     - db
     env_file:
