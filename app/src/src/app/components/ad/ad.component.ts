@@ -1,19 +1,25 @@
-import { Component, Input, OnChanges } from "@angular/core";
+import { Component, effect, input } from "@angular/core";
 import { Ad } from "../../models/responses";
 
 @Component({
-    selector: "fs-ad",
-    imports: [],
-    templateUrl: "./ad.component.html",
-    styleUrl: "./ad.component.css"
+  selector: "fs-ad",
+  imports: [],
+  templateUrl: "./ad.component.html",
+  styleUrl: "./ad.component.css"
 })
-export class AdComponent implements OnChanges {
-  @Input()
-  ad!: Ad;
+export class AdComponent {
+  ad = input.required<Ad>();
   imageIndex = 0;
 
-  ngOnChanges(): void {
-    this.imageIndex = 0;
+  constructor() {
+    effect(() => {
+      this.imageIndex = 0;
+      /* Preload images for better UX */
+      this.ad().images.forEach(({ image_url }) => {
+        const img = new Image();
+        img.src = image_url;
+      })
+    });
   }
 
   onClick(event: MouseEvent) {
@@ -23,12 +29,12 @@ export class AdComponent implements OnChanges {
     const left = targetRect.x + targetRect.width / 2 - clientX > 0;
     setTimeout(() => {
       if (left) {
-        this.imageIndex = this.imageIndex + this.ad.images.length - 1;
+        this.imageIndex = this.imageIndex + this.ad().images.length - 1;
       } else {
         this.imageIndex = this.imageIndex + 1;
       }
-      this.imageIndex %= this.ad.images.length;
-      console.log(this.ad.id, this.ad.images[this.imageIndex].image_url);
+      this.imageIndex %= this.ad().images.length;
+      console.log(this.ad().id, this.ad().images[this.imageIndex].image_url);
     });
     event.stopPropagation();
   }
