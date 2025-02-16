@@ -18,7 +18,7 @@ func (state *State) AuthorizedByAccessToken(role string, handler func(w JSONResp
 			w.WriteHeader(http.StatusUnauthorized)
 			return
 		}
-		id, err := auth.ValidateJWT(token, state.cfg.JwtSecret)
+		id, err := auth.ValidateJWT(token, state.cfg.Server.JwtSecret)
 		if err != nil {
 			w.WriteHeader(http.StatusUnauthorized)
 			return

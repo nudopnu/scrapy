@@ -93,7 +93,7 @@ func HandlerLogin(w JSONResponseWriter, r *http.Request, s *State) {
 		return
 	}
 	log.Printf("INFO: successfully logged in as '%s'\n", user.Username)
-	jwt, err := auth.MakeJWT(user.Username, int(user.ID), s.cfg.JwtSecret, 1*time.Hour)
+	jwt, err := auth.MakeJWT(user.Username, int(user.ID), s.cfg.Server.JwtSecret, 1*time.Hour)
 	if err != nil {
 		w.error(http.StatusInternalServerError, customerror.New("error creating access token", err))
 		return

@@ -8,6 +8,9 @@ For development run:
 
 ```bash
 docker compose -f docker-compose.dev.yaml up
+
+# on server updates
+docker compose -f docker-compose.dev.yaml up --build -d server
 ```
 
 For production run:

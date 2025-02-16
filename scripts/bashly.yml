@@ -1,0 +1,13 @@
+name: scrapy
+help: Scrapy CLI
+version: 0.1.0
+
+commands:
+- name: dev
+  alias: d
+  help: Development Commands
+
+  commands:
+  - name: server
+    alias: s
+    help: Run development server

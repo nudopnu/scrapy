@@ -40,6 +40,6 @@ func main() {
 
 	handler.StartMainLoop()
 
-	fmt.Printf("listening on %s\n", handler.cfg.Host)
-	log.Fatal(http.ListenAndServe(handler.cfg.Host, CORSMiddleware(mux)))
+	fmt.Printf("listening on %s\n", handler.cfg.GetHostUrl())
+	log.Fatal(http.ListenAndServe(handler.cfg.GetHostUrl(), CORSMiddleware(mux)))
 }

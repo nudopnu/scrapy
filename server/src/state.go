@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"fmt"
 	"os"
 
 	"github.com/nudopnu/scraper/internal/auth"
@@ -39,14 +40,14 @@ func initAdmin(s *State) error {
 }
 
 func initState() (*State, error) {
-	config, err := config.Load()
+	config, err := config.LoadConfig()
 	if err != nil {
 		return nil, err
 	}
-	db, err := sql.Open("postgres", config.DbUrl)
+	db, err := sql.Open("postgres", config.GetDbUrl())
 	dbQueries := database.New(db)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error connecting to database: %q", err)
 	}
 	ctx, cancel := context.WithCancel(context.Background())
 	state := State{
@@ -60,7 +61,7 @@ func initState() (*State, error) {
 	}
 	err = initAdmin(&state)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error initializing admin user: %q", err)
 	}
 	return &state, nil
 }

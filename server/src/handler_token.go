@@ -10,7 +10,7 @@ import (
 )
 
 func HandlerRefresh(w JSONResponseWriter, r *http.Request, state *State, user database.User) {
-	accessToken, err := auth.MakeJWT(user.Username, int(user.ID), state.cfg.JwtSecret, 1*time.Hour)
+	accessToken, err := auth.MakeJWT(user.Username, int(user.ID), state.cfg.Server.JwtSecret, 1*time.Hour)
 	if err != nil {
 		w.error(http.StatusInternalServerError, customerror.New("error creating access token", err))
 		return
